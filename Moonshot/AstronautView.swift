@@ -10,7 +10,25 @@ import SwiftUI
 
 struct AstronautView: View {
     
+    let missionsNames: [String]
+    
     let astronaut: Astronaut
+    
+    init(astronaut: Astronaut, missions: [Mission]) {
+        self.astronaut = astronaut
+        
+        var matches = [String]()
+        
+        for mission in missions {
+            for crewMember in mission.crew {
+                if crewMember.name == astronaut.id {
+                     matches.append(mission.displayName)
+                }
+            }
+        }
+        self.missionsNames = matches
+        print("\(astronaut.id): \(self.missionsNames)")
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -21,21 +39,30 @@ struct AstronautView: View {
                         .scaledToFit()
                         .frame(width: geometry.size.width)
                     Text(self.astronaut.description)
-                    .padding()
-                    .layoutPriority(1)
+                        .padding()
+                        .layoutPriority(1)
+                    Text("Missions:")
+                        .padding()
+                        .layoutPriority(1)
+                        .font(.headline)
+                    VStack {
+                        ForEach(self.missionsNames, id: \.self) {
+                            Text("\($0)")
+                        }
+                    }
                 }
             }
         }
         .navigationBarTitle(Text(astronaut.name), displayMode: .inline)
-       
     }
 }
 
 struct AstronautView_Previews: PreviewProvider {
     
-    static var astronauts: [Astronaut] = Bundle.main.decode("astronauts.json")
+    static let astronauts: [Astronaut] = Bundle.main.decode("astronauts.json")
+    static let missions: [Mission] = Bundle.main.decode("missions.json")
     
     static var previews: some View {
-        AstronautView(astronaut: astronauts[0])
+        AstronautView(astronaut: astronauts[7], missions: missions)
     }
 }

@@ -15,6 +15,8 @@ struct MissionView: View {
         let astronaut: Astronaut
     }
     
+    let missions: [Mission] = Bundle.main.decode("missions.json")
+    
     let astronauts: [CrewMember]
     
     let mission: Mission
@@ -49,12 +51,15 @@ struct MissionView: View {
                     
                     // mission date code
                     Text(self.mission.formattedLaunchDate)
+                        .padding()
+                        .font(.headline)
+                        .foregroundColor(.blue)
                     
                     Text(self.mission.description)
                     .padding()
                     
                     ForEach(self.astronauts, id: \.role) { crewMember in
-                        NavigationLink(destination: AstronautView(astronaut: crewMember.astronaut)) {
+                        NavigationLink(destination: AstronautView(astronaut: crewMember.astronaut, missions: self.missions)) {
                             HStack {
                                 if self.isCommander(crewMember) {
                                     Image(crewMember.astronaut.id)
