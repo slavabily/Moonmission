@@ -10,8 +10,9 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @State private var showingLaunchDate = false
+ 
     let astronauts: [Astronaut] = Bundle.main.decode("astronauts.json")
-    
     let missions: [Mission] = Bundle.main.decode("missions.json")
     
     var body: some View {
@@ -27,12 +28,37 @@ struct ContentView: View {
                     VStack(alignment: .leading) {
                         Text(mission.displayName)
                             .font(.headline)
-                        Text(mission.formattedLaunchDate)
+                        HStack {
+                            if self.showingLaunchDate {
+                                Text(mission.formattedLaunchDate)
+                            } else {
+                                ForEach(self.crewNames(mission), id: \.self) {
+                                    Text("\($0)")
+                                }
+                            }
+                        }
                     }
                 }
             }
-            .navigationBarTitle("Moonshot")
+            .navigationBarTitle("Moonshot", displayMode: .automatic)
+            .navigationBarItems(trailing: Button(action: {
+                self.showingLaunchDate.toggle()
+            }, label: {
+                if showingLaunchDate {
+                    Text("Crew")
+                } else {
+                    Text("Launch Date")
+                }
+            }))
         }
+    }
+    
+    func crewNames(_ mission: Mission) -> [String] {
+        var crewNames = [String]()
+        for crewMember in mission.crew {
+            crewNames.append(crewMember.name)
+        }
+        return crewNames
     }
 }
 
