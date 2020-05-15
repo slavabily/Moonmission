@@ -28,6 +28,7 @@ struct ContentView: View {
                     VStack(alignment: .leading) {
                         Text(mission.displayName)
                             .font(.headline)
+                            .accessibility(label: Text("Mission \(mission.displayName). \(self.showingLaunchDate ? " Launch date " : " Crew members" )"))
                         HStack {
                             if self.showingLaunchDate {
                                 Text(mission.formattedLaunchDate)
@@ -39,6 +40,8 @@ struct ContentView: View {
                         }
                     }
                 }
+                .accessibility(removeTraits: .isButton)
+                .accessibility(hint: Text("Double tap to open mission description"))
             }
             .navigationBarTitle("Moonshot", displayMode: .automatic)
             .navigationBarItems(trailing: Button(action: {
