@@ -38,9 +38,13 @@ struct AstronautView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: geometry.size.width)
+                        .accessibility(removeTraits: .isImage)
+                        .accessibility(label: Text("\(self.astronaut.id)'s image"))
+                    
                     Text(self.astronaut.description)
                         .padding()
                         .layoutPriority(1)
+                    
                     Text("Missions:")
                         .padding()
                         .layoutPriority(1)
@@ -50,6 +54,7 @@ struct AstronautView: View {
                             Text("\($0)")
                         }
                     }
+                    .accessibilityElement(children: .combine)
                 }
             }
         }

@@ -49,8 +49,10 @@ struct ContentView: View {
             }, label: {
                 if showingLaunchDate {
                     Text("Crew")
+                    .accessibility(hint: Text("Double click to show names of every mission's crew members"))
                 } else {
                     Text("Launch Date")
+                    .accessibility(hint: Text("Double click to show mission's launch dates"))
                 }
             }))
         }

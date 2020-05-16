@@ -48,15 +48,18 @@ struct MissionView: View {
                         .scaledToFit()
                         .frame(maxWidth: geometry.size.width * 0.7)
                         .padding(.top)
+                        .accessibility(removeTraits: .isImage)
+                        .accessibility(label: Text("\(self.mission.displayName) label"))
                     
                     // mission date code
                     Text(self.mission.formattedLaunchDate)
                         .padding()
                         .font(.headline)
                         .foregroundColor(.blue)
+                        .accessibility(label: Text("Mission date \(self.mission.formattedLaunchDate)"))
                     
                     Text(self.mission.description)
-                    .padding()
+                        .padding()
                     
                     ForEach(self.astronauts, id: \.role) { crewMember in
                         NavigationLink(destination: AstronautView(astronaut: crewMember.astronaut, missions: self.missions)) {
@@ -86,6 +89,8 @@ struct MissionView: View {
                             .padding(.horizontal)
                         }
                         .buttonStyle(PlainButtonStyle())
+                        .accessibility(removeTraits: .isButton)
+                        .accessibility(hint: Text("Double click to open personal description"))
                     }
                     Spacer(minLength: 25)
                 }
