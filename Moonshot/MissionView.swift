@@ -43,13 +43,16 @@ struct MissionView: View {
         GeometryReader { geometry in
             ScrollView(.vertical) {
                 VStack {
-                    Image(self.mission.image)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: geometry.size.width * 0.7)
-                        .padding(.top)
-                        .accessibility(removeTraits: .isImage)
-                        .accessibility(label: Text("\(self.mission.displayName) label"))
+                    GeometryReader { geo in
+                        Image(self.mission.image)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: geometry.size.width * 0.7)
+                            .padding(.top)
+                            .scaleEffect((geometry.size.width + geo.frame(in: .global).maxY * 2) * 0.001)
+                            .accessibility(removeTraits: .isImage)
+                            .accessibility(label: Text("\(self.mission.displayName) label"))
+                    }
                     
                     // mission date code
                     Text(self.mission.formattedLaunchDate)
